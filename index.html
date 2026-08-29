@@ -987,8 +987,8 @@
               <span class="field-error">Please enter your city.</span>
             </div>
             <div class="form-field" data-field="neetScore">
-              <label for="neetScore">NEET Score</label>
-              <input type="text" id="neetScore" name="neetScore" inputmode="numeric" placeholder="e.g. 550 (if applicable)">
+              <label for="neetScore">NEET/JEE Score</label>
+              <input type="text" id="neetScore" name="neetScore" inputmode="numeric" placeholder="e.g. 550 (NEET) or rank (JEE), if applicable">
             </div>
             <div class="form-field" data-field="category">
               <label for="category">Category</label>
@@ -1289,7 +1289,7 @@
       "City": form.city.value.trim(),
       "Interested Course": courseVal,
       "Highest Qualification": form.qualification.value,
-      "NEET Score": form.neetScore.value.trim() || "Not provided",
+      "NEET/JEE Score": form.neetScore.value.trim() || "Not provided",
       "Category": form.category.value || "Not specified",
       "Preferred College/State": form.preferredCollege.value.trim() || "Not specified",
       "Message / Requirements": form.message.value.trim() || "—"
