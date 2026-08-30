@@ -93,8 +93,8 @@
     *{ animation-duration:.01ms !important; transition-duration:.01ms !important; }
   }
 
-  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
-  .reveal.is-visible{ opacity:1; transform:translateY(0); }
+  .js-reveal-ready .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+  .js-reveal-ready .reveal.is-visible{ opacity:1; transform:translateY(0); }
 
   .eyebrow{
     display:inline-flex; align-items:center; gap:8px;
@@ -1094,6 +1094,30 @@
 </footer>
 
 <script>
+  // ---------- Reveal on scroll (runs first; safe by default) ----------
+  (function(){
+    document.documentElement.classList.add('js-reveal-ready');
+    const items = document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){
+      items.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    items.forEach(el => io.observe(el));
+    // Safety net: if the observer never fires for any reason, force-reveal
+    // everything after a short delay so content is never stuck invisible.
+    setTimeout(() => {
+      items.forEach(el => el.classList.add('is-visible'));
+    }, 2000);
+  })();
+
   /* =========================================================
      FORM_CONFIG — connect the enquiry form to a real service
      -----------------------------------------------------------
@@ -1191,24 +1215,6 @@
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
     sections.forEach(s => navObserver.observe(s));
   }
-
-  // ---------- Reveal on scroll ----------
-  (function(){
-    const items = document.querySelectorAll('.reveal');
-    if(!('IntersectionObserver' in window)){
-      items.forEach(el => el.classList.add('is-visible'));
-      return;
-    }
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add('is-visible');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    items.forEach(el => io.observe(el));
-  })();
 
   // ---------- Enquiry form validation & submission ----------
   const form = document.getElementById('enquiryForm');
